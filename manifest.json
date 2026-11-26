@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "חשבון גוגל לטלפון כשר",
+  "version": "1.1.5",
+  "description": "מוביל צעד אחרי צעד בפתיחת חשבון גוגל אחד, עם הטלפון הכשר שלך.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": [
+    "https://accounts.google.com/*",
+    "https://mail.google.com/*",
+    "https://myaccount.google.com/*",
+    "https://sms4free.co.il/*",
+    "https://*.sms4free.co.il/*",
+    "https://*.googleusercontent.com/*",
+    "https://*.gstatic.com/*",
+    "https://api.mail.tm/*",
+    "https://api.mail.gw/*",
+    "https://api.tempmail.lol/*",
+    "https://api.guerrillamail.com/*",
+    "https://api.internal.temp-mail.io/*",
+    "https://tempmail.plus/*",
+    "https://api.maildrop.cc/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "פתיחת חשבון גוגל לטלפון כשר" },
+  "content_scripts": [
+    {
+      "matches": ["https://accounts.google.com/*", "https://myaccount.google.com/*", "https://mail.google.com/*"],
+      "js": ["lib/jsQR.js", "lib/fix.js", "content/panel.js", "content/google.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://accounts.google.com/devicephoneverification/*"],
+      "js": ["content/dpv-main.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://sms4free.co.il/*", "https://*.sms4free.co.il/*"],
+      "js": ["lib/fix.js", "content/panel.js", "content/sms4free.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
